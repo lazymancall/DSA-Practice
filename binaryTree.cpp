@@ -1,6 +1,8 @@
 #include <iostream>
 #include "binaryTree.h"
 
+// Binary Tree; No duplicate nodes.
+
 BinaryTree::BinaryTree() {
 	head = nullptr;
 	count = 0;
@@ -46,10 +48,6 @@ bool BinaryTree::exists(int data) {
 	return does_exist;
 }
 
-// get node count
-
-//
-
 // private
 
 int BinaryTree::search_node(Node * parent, int data) {
@@ -93,46 +91,55 @@ bool BinaryTree::exists_node(Node * parent, int data) {
 bool BinaryTree::delete_node(Node *& parent, int data) {
 	bool has_deleted = false;
 
-	if (data == parent->data) {                                             // data with node is found
-		std::cout << "no child" <<  std::endl;
-		if (parent->right == nullptr && parent->left == nullptr) {      	// if has no children
+	if (data == parent->data) { // data with node is found
+		if (parent->right == nullptr && parent->left == nullptr) { // if has no children
+			std::cout << "no child" <<  std::endl;
 			parent = nullptr;
 			delete parent;
 		}
-		else if (parent->right == nullptr || parent->left == nullptr) { 	// if has one child
-			std::cout << "one child" <<  std::endl;
-			if(parent->right != nullptr) {
-				Node * temp = parent;
-				parent = parent->right;
-				temp = nullptr;
-				delete temp;
-			} else if (parent->left != nullptr) {
-				Node * temp = parent->left;
-				parent->data = temp->data;
-				temp = nullptr;
-				delete temp;
-			}
-		}
-		else if (parent->right != nullptr && parent->left != nullptr) { 	// if has two children
+		else if (parent->right != nullptr && parent->left != nullptr) { // if has two children
 			std::cout << "two child" <<  std::endl;
-			Node *& temp = parent->right;
-			while(temp->left != nullptr) {
-				temp = temp->left;
+			Node * temp = parent->left;
+			while(temp->right != nullptr) { // get the left node's rightmost node
+				temp = temp->right;
 			}
+			// write that node's data to the parent node's data
 			parent->data = temp->data;
+			temp = nullptr;
+			delete temp;
+		}
+		else if (parent->right != nullptr) { // if left node is null
+			std::cout << "one child right" <<  std::endl;
+			Node * temp = parent->right; // get right node
+
+			// replace parent variables with right node
+			parent->data = temp->data;
+			parent->right = temp->right;
+			parent->left = temp->left;
+
+			// discard old right node
+			temp = nullptr;
+			delete temp;
+		} 
+		else if (parent->left != nullptr) { // if right node is null
+			std::cout << "one child left" <<  std::endl;
+			Node * temp = parent->left;
+			
+			parent->data = temp->data;
+			parent->right = temp->right;
+			parent->left = temp->left;
+			
 			temp = nullptr;
 			delete temp;
 		}
 		has_deleted = true;
 	}
-	else {															    	// keep looking for node
-		if (parent->right != nullptr || parent->left != nullptr) {      
-			if(parent->right != nullptr && has_deleted != true) {
-				has_deleted = delete_node(parent->right, data);
-			} 
-			if (parent->left != nullptr && has_deleted != true) {
-				has_deleted = delete_node(parent->left, data);
-			}
+	else { // keep looking for node
+		if (parent->right != nullptr && has_deleted != true) {
+			has_deleted = delete_node(parent->right, data);
+		} 
+		if (parent->left != nullptr && has_deleted != true) {
+			has_deleted = delete_node(parent->left, data);
 		}
 	}
 	return has_deleted;
@@ -163,7 +170,7 @@ void BinaryTree::insert_node(Node *& parent, int data)  {
 		if (data >= parent->data) {
 			insert_node(parent->left, data);
 		}
-		else if (data < parent->data) {
+		else if (data <= parent->data) {
 			insert_node(parent->right, data);
 		}
 	}
@@ -193,18 +200,19 @@ Node * BinaryTree::create_node(int data) {
 int main() {
 	std::cout << "test" << std::endl;
 	BinaryTree newTree;
-	newTree.add(1);
 	newTree.add(2);
+	newTree.add(9);
+	newTree.add(1);
+	newTree.add(8);
+	newTree.add(7);
 	newTree.add(3);
-	newTree.add(4);
 	newTree.add(5);
 	newTree.add(6);
-	newTree.add(7);
-	newTree.add(8);
-	newTree.add(9);
+	newTree.add(0);
 	newTree.list();
-
 	std::cout << "removed? : " << newTree.remove(8) << std::endl;
+	std::cout << "removed? : " << newTree.remove(13) << std::endl;
+	std::cout << "removed? : " << newTree.remove(2) << std::endl;
 
 	newTree.list();
 	return 0;
