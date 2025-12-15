@@ -70,6 +70,9 @@
 
 ### Notes
 
-I think binary trees are pretty cool :)
+- Originally I did this because I wanted to do another project that involved doing a specific type of tree
+- I borrowed my knowledge of linked lists and applied it to binary trees (didn't quite work out)
+- I was really caught up on how to delete a node with two children (until I realized I don't directly delete that specific node)
+- I think binary trees are pretty cool :)
 
 ---

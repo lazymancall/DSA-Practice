@@ -15,7 +15,6 @@ BinaryTree::BinaryTree(int * data_set, int size) {
 
 BinaryTree::~BinaryTree() {
 	delete_all_nodes(head);
-	std::cout << "tree terminated" << std::endl;
 }
 
 // public
@@ -35,18 +34,22 @@ bool BinaryTree::remove(int data) {
 }
 
 void BinaryTree::list_preorder() {
+	std::cout << "Preorder List: " << std::endl;
 	list_preorder_nodes(head);
 }
 
 void BinaryTree::list_postorder() {
+	std::cout << "Postorder List: " << std::endl;
 	list_postorder_nodes(head);
 }
 
 void BinaryTree::list_inorder() {
+	std::cout << "Inorder List: " << std::endl;
 	list_inorder_nodes(head);
 }
 
 void BinaryTree::list_level_order() {
+	std::cout << "Level Order List: " << std::endl;
 	list_level_order_nodes(head);
 }
 
@@ -63,11 +66,10 @@ int BinaryTree::get_count() {
 bool BinaryTree::search_node(Node * parent, int data) {
 	int data_found = false;
 
-	if (data == parent->data) {                                         	// data with node is found
+	if (data == parent->data) { // data with node is found
 		data_found = true;
-		std::cout << "right: " <<parent->right  << " | left: " << parent->left << std::endl;
 	}
-	else {															    	// keep looking for node
+	else { // keep looking for node
 		if (parent->right != nullptr || parent->left != nullptr) {      
 			if(parent->right != nullptr && data_found != true) {
 				data_found = search_node(parent->right, data);
@@ -85,12 +87,10 @@ bool BinaryTree::delete_node(Node *& parent, int data) {
 
 	if (data == parent->data) { // data with node is found
 		if (parent->right == nullptr && parent->left == nullptr) { // if has no children
-			std::cout << "no child" <<  std::endl;
 			parent = nullptr;
 			delete parent;
 		}
 		else if (parent->right != nullptr && parent->left != nullptr) { // if has two children
-			std::cout << "two child" <<  std::endl;
 			Node * temp = parent->left;
 			while(temp->right != nullptr) { // get the left node's rightmost node
 				temp = temp->right;
@@ -101,7 +101,6 @@ bool BinaryTree::delete_node(Node *& parent, int data) {
 			count++;
 		}
 		else if (parent->right != nullptr) { // if left node is null
-			std::cout << "one child right" <<  std::endl;
 			Node * temp = parent->right; // get right node
 
 			// replace parent variables with right node
@@ -114,7 +113,6 @@ bool BinaryTree::delete_node(Node *& parent, int data) {
 			delete temp;
 		} 
 		else if (parent->left != nullptr) { // if right node is null
-			std::cout << "one child left" <<  std::endl;
 			Node * temp = parent->left;
 			
 			parent->data = temp->data;
@@ -147,13 +145,13 @@ void BinaryTree::delete_all_nodes(Node *& parent) {
 		if (parent->right != nullptr) {
 			delete_all_nodes(parent->right);
 		}
+		parent = nullptr;
 		delete parent;
 	}
 }
 
 void BinaryTree::insert_node(Node *& parent, int data)  {
 	// if node is empty, add node
-	std::cout << "part 1" << std::endl;
 	if (parent == nullptr) {
 		parent = new Node();
 		parent = create_node(data);
@@ -192,7 +190,6 @@ void BinaryTree::list_preorder_nodes(Node * parent) {
 	}
 }
 
-// done
 void BinaryTree::list_postorder_nodes(Node * parent) {
 	if(parent != nullptr) {
 		// go through both left and right nodes
@@ -206,7 +203,6 @@ void BinaryTree::list_postorder_nodes(Node * parent) {
 	}
 }
 
-// do
 void BinaryTree::list_inorder_nodes(Node * parent) {
 	if(parent != nullptr) {
 		// go through both left and right nodes
@@ -220,7 +216,6 @@ void BinaryTree::list_inorder_nodes(Node * parent) {
 	}
 }
 
-// do
 void BinaryTree::list_level_order_nodes(Node * parent) {
 	if(parent != nullptr) {
 		if (parent == head) {
@@ -253,21 +248,19 @@ Node * BinaryTree::create_node(int data) {
 
 int main() {
 	std::cout << "test" << std::endl;
+	// creating array
 	int * arr = new int[7];
 	for (int i = 0; i < 7; i++) {
 		arr[i] = i+1;
 	}
 
+	// creating tree from array
 	BinaryTree newTree = BinaryTree(arr, 7);
 
 	std::cout << "count : " << newTree.get_count() << std::endl;
 	newTree.list_level_order();
-	std::cout << "1 is found: " << newTree.search(1) << std::endl;
-	std::cout << "2 is found: " << newTree.search(2) << std::endl;
-	std::cout << "3 is found: " << newTree.search(3) << std::endl;
-	std::cout << "4 is found: " << newTree.search(4) << std::endl;
-	std::cout << "5 is found: " << newTree.search(5) << std::endl;
-	std::cout << "6 is found: " << newTree.search(6) << std::endl;
-	std::cout << "7 is found: " << newTree.search(7) << std::endl;
+	newTree.list_inorder();
+	newTree.list_preorder();
+	newTree.list_postorder();
 	return 0;
 }
