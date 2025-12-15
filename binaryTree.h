@@ -37,7 +37,6 @@ class BinaryTree {
 	void list_postorder();
 	void list_inorder();
 	void list_level_order();
-	
 };
 
 /*
