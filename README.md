@@ -71,4 +71,5 @@
 ### Notes
 
 I think binary trees are pretty cool :)
+
 ---
