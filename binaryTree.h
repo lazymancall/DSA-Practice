@@ -1,4 +1,5 @@
 #ifndef _BINARYTREE_
+#define _BINARYTREE_
 
 struct Node {
 	int data;
@@ -10,13 +11,12 @@ class BinaryTree {
 	Node * head;
 	int count;
 
+	void insert_node(Node *& parent, int data);
+	Node * create_node(int data);
 	bool delete_node(Node *& parent, int data);
 	void delete_all_nodes(Node *& parent);
-	void insert_node(Node *& parent, int data);
 	void list_nodes(Node * parent);
-	Node * create_node(int data);
-	int search_node(Node * parent, int data);
-	bool exists_node(Node * parent, int data);
+	bool search_node(Node * parent, int data);
 
 	public:
 	BinaryTree();
@@ -27,7 +27,6 @@ class BinaryTree {
 	int search(int data);
 	bool remove(int data);
 	int get_count();
-	bool exists(int data);
 	
 };
 

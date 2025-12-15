@@ -1,8 +1,6 @@
 #include <iostream>
 #include "binaryTree.h"
 
-// Binary Tree; No duplicate nodes.
-
 BinaryTree::BinaryTree() {
 	head = nullptr;
 	count = 0;
@@ -40,37 +38,10 @@ int BinaryTree::get_count() {
 	return count;
 }
 
-bool BinaryTree::exists(int data) {
-	bool does_exist = false;
-	if (exists_node(head, data)) {
-		does_exist = true;
-	}
-	return does_exist;
-}
-
 // private
 
-int BinaryTree::search_node(Node * parent, int data) {
-	int data_found = -1;
-
-	if (data == parent->data) {                                         	// data with node is found
-		data_found = data;
-	}
-	else {															    	// keep looking for node
-		if (parent->right != nullptr || parent->left != nullptr) {      
-			if(parent->right != nullptr && data_found != true) {
-				data_found = delete_node(parent->right, data);
-			} 
-			if (parent->left != nullptr && data_found != true) {
-				data_found = delete_node(parent->left, data);
-			}
-		}
-	}
-	return data_found;
-}
-
-bool BinaryTree::exists_node(Node * parent, int data) {
-	bool data_found = false;
+bool BinaryTree::search_node(Node * parent, int data) {
+	int data_found = false;
 
 	if (data == parent->data) {                                         	// data with node is found
 		data_found = true;
@@ -78,10 +49,10 @@ bool BinaryTree::exists_node(Node * parent, int data) {
 	else {															    	// keep looking for node
 		if (parent->right != nullptr || parent->left != nullptr) {      
 			if(parent->right != nullptr && data_found != true) {
-				data_found = delete_node(parent->right, data);
+				data_found = search_node(parent->right, data);
 			} 
 			if (parent->left != nullptr && data_found != true) {
-				data_found = delete_node(parent->left, data);
+				data_found = search_node(parent->left, data);
 			}
 		}
 	}
@@ -105,8 +76,8 @@ bool BinaryTree::delete_node(Node *& parent, int data) {
 			}
 			// write that node's data to the parent node's data
 			parent->data = temp->data;
-			temp = nullptr;
-			delete temp;
+			has_deleted = delete_node(parent->left, temp->data);
+			count++;
 		}
 		else if (parent->right != nullptr) { // if left node is null
 			std::cout << "one child right" <<  std::endl;
@@ -133,6 +104,7 @@ bool BinaryTree::delete_node(Node *& parent, int data) {
 			delete temp;
 		}
 		has_deleted = true;
+		count--;
 	}
 	else { // keep looking for node
 		if (parent->right != nullptr && has_deleted != true) {
@@ -200,6 +172,7 @@ Node * BinaryTree::create_node(int data) {
 int main() {
 	std::cout << "test" << std::endl;
 	BinaryTree newTree;
+
 	newTree.add(2);
 	newTree.add(9);
 	newTree.add(1);
@@ -209,10 +182,12 @@ int main() {
 	newTree.add(5);
 	newTree.add(6);
 	newTree.add(0);
+
+	std::cout << "count : " << newTree.get_count() << std::endl;
+	std::cout << "list : " << std::endl;
 	newTree.list();
-	std::cout << "removed? : " << newTree.remove(8) << std::endl;
-	std::cout << "removed? : " << newTree.remove(13) << std::endl;
-	std::cout << "removed? : " << newTree.remove(2) << std::endl;
+	std::cout << "9 is found: " << newTree.search(9) << std::endl;
+
 
 	newTree.list();
 	return 0;
