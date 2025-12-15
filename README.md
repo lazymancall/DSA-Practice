@@ -68,4 +68,7 @@
 `void list_level_order_nodes(parent)` : Lists node data while traversing in level order.
 - parent : Address of a Node Pointer
 
+### Notes
+
+I think binary trees are pretty cool :)
 ---
